@@ -135,7 +135,6 @@ class ObjectEditor:
         self._start: Optional[Point] = None
         self._menu = tk.Menu(self._window)
         
-        # Исправление: postcommand добавлен при инициализации меню
         self._objects_menu = tk.Menu(self._menu, tearoff=False, postcommand=self._on_init_menu_popup)
 
         self._create_menu()
@@ -159,7 +158,7 @@ class ObjectEditor:
                 command=lambda selected=index: self._select_object(selected),
             )
         
-        # Исправление: убрали postcommand из add_cascade
+        
         self._menu.add_cascade(
             label="Об'єкти",
             menu=self._objects_menu,
