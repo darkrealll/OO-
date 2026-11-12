@@ -1,0 +1,80 @@
+classDiagram
+    direction TB
+
+    class Point {
+        +float x
+        +float y
+    }
+
+    class Shape {
+        <<abstract>>
+        +draw(canvas: Canvas)*
+    }
+
+    class Dot {
+        +Point center
+        +draw(canvas: Canvas)
+    }
+
+    class Line {
+        +Point start
+        +Point end
+        +draw(canvas: Canvas)
+    }
+
+    class Rectangle {
+        +Point first_corner
+        +Point opposite_corner
+        +draw(canvas: Canvas)
+    }
+
+    class Ellipse {
+        +Point center
+        +Point corner
+        +draw(canvas: Canvas)
+    }
+
+    class ShapeStorage {
+        -Shape[] items
+        -int size
+        +add(shape: Shape)
+        +draw_all(canvas: Canvas)
+        +clear()
+    }
+
+    class ToolTip {
+        -Widget widget
+        -str text
+        +show(event)
+        +hide(event)
+    }
+
+    class ObjectEditor {
+        -ShapeStorage storage
+        -int current_type
+        -Point start
+        +run()
+        -create_menu()
+        -create_toolbar()
+        -select_object(object_type: int)
+        -start_object(event)
+        -preview_object(event)
+        -finish_object(event)
+        -add_shape(shape: Shape)
+        -clear()
+    }
+
+    Shape <|-- Dot
+    Shape <|-- Line
+    Shape <|-- Rectangle
+    Shape <|-- Ellipse
+
+    Dot *-- Point : center
+    Line *-- Point : start/end
+    Rectangle *-- Point : corners
+    Ellipse *-- Point : center/corner
+
+    ShapeStorage o-- Shape : stores up to 111
+    ObjectEditor *-- ShapeStorage
+    ObjectEditor ..> Shape : creates
+    ObjectEditor ..> ToolTip : uses
