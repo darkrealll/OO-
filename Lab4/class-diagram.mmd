@@ -1,0 +1,62 @@
+classDiagram
+    direction TB
+
+    class Point {
+        +float x
+        +float y
+    }
+
+    class Shape {
+        <<abstract>>
+        +show(canvas: Canvas)*
+    }
+
+    class DotShape
+    class LineShape
+    class RectShape
+    class EllipseShape
+    class LineWithCircles
+    class WireframeCube
+
+    Shape <|-- DotShape
+    Shape <|-- LineShape
+    Shape <|-- RectShape
+    Shape <|-- EllipseShape
+    LineShape <|-- LineWithCircles
+    EllipseShape <|-- LineWithCircles
+    RectShape <|-- WireframeCube
+    LineShape <|-- WireframeCube
+
+    DotShape *-- Point
+    LineShape *-- Point
+    RectShape *-- Point
+    EllipseShape *-- Point
+    LineWithCircles *-- Point
+    WireframeCube *-- Point
+
+    class ShapeStorage {
+        -Shape[] items
+        -int capacity
+        +add(shape: Shape)
+        +show_all(canvas: Canvas)
+        +clear()
+    }
+
+    class ToolTip {
+        -Widget widget
+        -str text
+        +show(event)
+        +hide(event)
+    }
+
+    class MyEditor {
+        -ShapeStorage storage
+        -int current_type
+        -Point start
+        +run()
+    }
+
+    ShapeStorage o-- Shape
+    MyEditor *-- ShapeStorage
+    MyEditor ..> Shape : creates
+    MyEditor ..> ToolTip : uses
