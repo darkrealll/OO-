@@ -166,10 +166,36 @@ class MyEditor:
             icon.put("#1565c0", to=(3, 8, 8, 16))
             icon.put("#1565c0", to=(16, 8, 21, 16))
         else:
-            icon.put("#8e24aa", to=(5, 8, 17, 10))
-            icon.put("#8e24aa", to=(8, 5, 20, 7))
-            icon.put("#8e24aa", to=(5, 8, 8, 19))
-            icon.put("#8e24aa", to=(17, 10, 20, 21))
+            color = "#7b1fa2"
+
+            def draw_segment(
+                start: tuple[int, int],
+                end: tuple[int, int],
+            ) -> None:
+                x1, y1 = start
+                x2, y2 = end
+                steps = max(abs(x2 - x1), abs(y2 - y1))
+                for step in range(steps + 1):
+                    ratio = step / steps
+                    x = round(x1 + (x2 - x1) * ratio)
+                    y = round(y1 + (y2 - y1) * ratio)
+                    icon.put(color, (x, y))
+
+            for segment in (
+                ((5, 8), (16, 8)),
+                ((16, 8), (16, 19)),
+                ((16, 19), (5, 19)),
+                ((5, 19), (5, 8)),
+                ((9, 5), (20, 5)),
+                ((20, 5), (20, 16)),
+                ((20, 16), (9, 16)),
+                ((9, 16), (9, 5)),
+                ((5, 8), (9, 5)),
+                ((16, 8), (20, 5)),
+                ((16, 19), (20, 16)),
+                ((5, 19), (9, 16)),
+            ):
+                draw_segment(*segment)
         return icon
 
     def _sync_menu_selection(self) -> None:
